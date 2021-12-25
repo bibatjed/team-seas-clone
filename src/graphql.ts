@@ -8,12 +8,18 @@
 /* tslint:disable */
 /* eslint-disable */
 export class CreateDonationInput {
+    count: number;
     display_name: string;
     email: string;
     mobile?: Nullable<string>;
     team?: Nullable<string>;
     message?: Nullable<string>;
     created_at?: Nullable<DateTime>;
+}
+
+export class OrderByParams {
+    field?: Nullable<string>;
+    direction?: Nullable<string>;
 }
 
 export class Donation {
@@ -28,13 +34,23 @@ export class Donation {
 }
 
 export abstract class IQuery {
-    abstract donations(): Nullable<Donation>[] | Promise<Nullable<Donation>[]>;
+    abstract donations(orderBy?: Nullable<OrderByParams>): Nullable<Donation>[] | Promise<Nullable<Donation>[]>;
 
     abstract donation(id: number): Nullable<Donation> | Promise<Nullable<Donation>>;
+
+    abstract totalDonations(): Nullable<number> | Promise<Nullable<number>>;
 }
 
 export abstract class IMutation {
     abstract createDonation(createDonationInput: CreateDonationInput): Donation | Promise<Donation>;
+}
+
+export class Result {
+    total: number;
+}
+
+export abstract class ISubscription {
+    abstract totalUpdated(): Result | Promise<Result>;
 }
 
 export type DateTime = any;

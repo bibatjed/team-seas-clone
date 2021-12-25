@@ -12,6 +12,7 @@ type Donation {
 }
 
 input CreateDonationInput {
+  count: Int!
   display_name: String!
   email: String!
   mobile: String
@@ -20,11 +21,25 @@ input CreateDonationInput {
   created_at: DateTime
 }
 
+input OrderByParams {
+  field: String
+  direction: String
+}
+
 type Query {
-  donations: [Donation]!
+  donations(orderBy: OrderByParams): [Donation]!
   donation(id: Int!): Donation
+  totalDonations: Int
 }
 
 type Mutation {
   createDonation(createDonationInput: CreateDonationInput!): Donation!
+}
+
+type Result {
+  total: Int!
+}
+
+type Subscription {
+  totalUpdated: Result!
 }
